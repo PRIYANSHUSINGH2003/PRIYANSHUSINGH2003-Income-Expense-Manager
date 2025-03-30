@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Typography, TextField, Button, Select, MenuItem, Grid, Card, CardContent, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
+
+import { Container, Typography, TextField, Button,Paper, Select, MenuItem, Grid, Card, CardContent, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
 
 function App() {
     const [stock, setStock] = useState([]);
@@ -71,29 +72,43 @@ function App() {
 
             {/* Display Stock Data */}
             <Card variant="outlined" style={{ marginBottom: '20px' }}>
-                <CardContent>
-                    <Typography variant="h5">📋 Stock Records</Typography>
+              <Container maxWidth="sm" style={{ marginTop: '40px', textAlign: 'center' }}>
+                {/* Invoice Layout */}
+                <Paper elevation={3} style={{ padding: '20px', border: '2px solid black' }}>
+                    <Grid container alignItems="center" justifyContent="space-between">
+                        <Grid item>
+                            <img src="/logo.png" alt="Company Logo" style={{ height: '80px' }} />
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="h4" style={{ fontWeight: 'bold' }}>Stock Records</Typography>
+                        </Grid>
+                    </Grid>
+                    <hr style={{ margin: '10px 0', borderTop: '2px dashed black' }} />
                     <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Type</TableCell>
-                                <TableCell>Vendor</TableCell>
-                                <TableCell>Amount</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {stock.map((item, index) => (
-                                <TableRow key={index}>
-                                    <TableCell>{item.type}</TableCell>
-                                    <TableCell>{item.vendor}</TableCell>
-                                    <TableCell>₹{item.amount}</TableCell>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Type</TableCell>
+                                    <TableCell>Vendor</TableCell>
+                                    <TableCell>Amount</TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </CardContent>
+                            </TableHead>
+                            <TableBody>
+                                {stock.map((item, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell>{item.type}</TableCell>
+                                        <TableCell>{item.vendor}</TableCell>
+                                        <TableCell>₹{item.amount}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    <hr style={{ margin: '10px 0', borderTop: '2px dashed black' }} />
+                    <Typography variant="h6" style={{ fontWeight: 'bold', color: netProfit >= 0 ? 'green' : 'red' }}>
+                        Net Profit/Loss: {netProfit >= 0 ? `+ ₹${netProfit}` : `- ₹${Math.abs(netProfit)}`}
+                    </Typography>
+                </Paper>
+              </Container>
             </Card>
-
             {/* Income & Expense */}
             <Card variant="outlined" style={{ marginBottom: '20px' }}>
                 <CardContent>
@@ -123,27 +138,42 @@ function App() {
 
             {/* Display Income & Expense Data */}
             <Card variant="outlined" style={{ marginBottom: '20px' }}>
-                <CardContent>
-                    <Typography variant="h5">📋 Income & Expense Records</Typography>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Category</TableCell>
-                                <TableCell>Type</TableCell>
-                                <TableCell>Amount</TableCell>
+            <Container maxWidth="sm" style={{ marginTop: '40px', textAlign: 'center' }}>
+            {/* Invoice Layout */}
+            <Paper elevation={3} style={{ padding: '20px', border: '2px solid black' }}>
+                <Grid container alignItems="center" justifyContent="space-between">
+                    <Grid item>
+                        <img src="/logo.png" alt="Company Logo" style={{ height: '80px' }} />
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="h4" style={{ fontWeight: 'bold' }}>INCOME & EXPENSE RECORD</Typography>
+                    </Grid>
+                </Grid>
+                <hr style={{ margin: '10px 0', borderTop: '2px dashed black' }} />
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell style={{ fontWeight: 'bold' }}>Category</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }}>Type</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }}>Amount (₹)</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {incomeExpense.map((entry, index) => (
+                            <TableRow key={index}>
+                                <TableCell>{entry.category}</TableCell>
+                                <TableCell>{entry.type === 'income' ? 'Income' : 'Expense'}</TableCell>
+                                <TableCell>{entry.amount}</TableCell>
                             </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {incomeExpense.map((entry, index) => (
-                                <TableRow key={index}>
-                                    <TableCell>{entry.category}</TableCell>
-                                    <TableCell>{entry.type === 'income' ? 'Income' : 'Expense'}</TableCell>
-                                    <TableCell>₹{entry.amount}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </CardContent>
+                        ))}
+                    </TableBody>
+                </Table>
+                <hr style={{ margin: '10px 0', borderTop: '2px dashed black' }} />
+                <Typography variant="h6" style={{ fontWeight: 'bold', color: netProfit >= 0 ? 'green' : 'red' }}>
+                    Net Profit/Loss: {netProfit >= 0 ? `+ ₹${netProfit}` : `- ₹${Math.abs(netProfit)}`}
+                </Typography>
+            </Paper>
+        </Container>
             </Card>
 
             {/* Net Profit/Loss */}
