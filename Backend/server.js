@@ -10,11 +10,12 @@ app.use(express.json());
 app.use(cors());
 
 // Database Connection
-mongoose.connect('mongodb+srv://dotis60197:110044@cluster0.ibzn8th.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+mongoose.connect('mongodb+srv://priyanshusingh00004:110044@cluster0.zy000zt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+    serverSelectionTimeoutMS: 5000, // Adjusted timeout for server selection
+    socketTimeoutMS: 45000, // Consider increasing socket timeout
+    connectTimeoutMS: 30000,
 });
-
+ 
 const StockSchema = new mongoose.Schema({
     type: String, // purchase or sale
     vendor: String,
@@ -40,7 +41,14 @@ app.post('/stock', async (req, res) => {
 
 app.get('/stock', async (req, res) => {
     const stocks = await Stock.find();
-    res.json(stocks);
+    const totalSales = stocks
+            .filter(stock => stock.type === 'sale')
+            .reduce((sum, stock) => sum + stock.amount, 0);
+    const totalCosts = stocks
+            .filter(stock => stock.type === 'purchase')
+            .reduce((sum, stock) => sum + stock.amount, 0);
+    const netProfitStock = totalSales - totalCosts;
+    res.json({ stocks, netProfitStock });
 });
 
 app.post('/income-expense', async (req, res) => {

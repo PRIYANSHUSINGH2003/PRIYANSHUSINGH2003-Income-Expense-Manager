@@ -6,6 +6,7 @@ import { Container, Typography, TextField, Button,Paper, Select, MenuItem, Grid,
 function App() {
     const [stock, setStock] = useState([]);
     const [incomeExpense, setIncomeExpense] = useState([]);
+    const [netProfitStock, setNetProfitStock] = useState(0);
     const [netProfit, setNetProfit] = useState(0);
 
     const [stockForm, setStockForm] = useState({ type: '', vendor: '', amount: '' });
@@ -18,7 +19,10 @@ function App() {
 
     const fetchStock = async () => {
         const response = await axios.get('http://localhost:5000/stock');
-        setStock(response.data);
+        setStock(response.data.stocks);
+        setNetProfitStock(response.data.netProfitStock);
+        console.log(response.data);
+        console.log(response.data.netProfitStock);
     };
 
     const fetchIncomeExpense = async () => {
@@ -104,7 +108,7 @@ function App() {
                         </Table>
                     <hr style={{ margin: '10px 0', borderTop: '2px dashed black' }} />
                     <Typography variant="h6" style={{ fontWeight: 'bold', color: netProfit >= 0 ? 'green' : 'red' }}>
-                        Net Profit/Loss: {netProfit >= 0 ? `+ ₹${netProfit}` : `- ₹${Math.abs(netProfit)}`}
+                        Net Profit/Loss: {netProfitStock >= 0 ? `+ ₹${netProfitStock}` : `- ₹${Math.abs(netProfitStock)}`}
                     </Typography>
                 </Paper>
               </Container>
