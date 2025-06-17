@@ -35,6 +35,13 @@ html.dark {
 .text-accent-foreground { color: var(--color-accent-foreground) !important; }
 .bg-accent-foreground { background-color: var(--color-accent-foreground) !important; }
 .bg-surface { background-color: var(--color-bg-surface) !important; }
+.transition-glass {
+  transition:
+    background 0.5s cubic-bezier(0.4,0,0.2,1),
+    box-shadow 0.5s cubic-bezier(0.4,0,0.2,1),
+    border 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+
 .bg-glass {
   background: linear-gradient(120deg, rgba(255,255,255,0.82) 60%, rgba(30,64,175,0.13) 100%),
               linear-gradient(90deg, rgba(67,233,123,0.04) 0%, rgba(212,175,55,0.03) 100%);
@@ -46,7 +53,11 @@ html.dark {
   border: 1px solid rgba(255,255,255,0.18);
   backdrop-filter: blur(28px) saturate(180%);
   -webkit-backdrop-filter: blur(28px) saturate(180%);
-  transition: background 0.5s, box-shadow 0.5s, border 0.5s;
+  /* Use the new transition utility */
+  transition:
+    background 0.5s cubic-bezier(0.4,0,0.2,1),
+    box-shadow 0.5s cubic-bezier(0.4,0,0.2,1),
+    border 0.5s cubic-bezier(0.4,0,0.2,1);
 }
 html.dark .bg-glass {
   background: linear-gradient(120deg, rgba(35,35,54,0.92) 60%, rgba(40,140,250,0.13) 100%),
@@ -59,7 +70,11 @@ html.dark .bg-glass {
   border: 1px solid rgba(40,140,250,0.13);
   backdrop-filter: blur(32px) saturate(200%);
   -webkit-backdrop-filter: blur(32px) saturate(200%);
-  transition: background 0.5s, box-shadow 0.5s, border 0.5s;
+  /* Use the new transition utility */
+  transition:
+    background 0.5s cubic-bezier(0.4,0,0.2,1),
+    box-shadow 0.5s cubic-bezier(0.4,0,0.2,1),
+    border 0.5s cubic-bezier(0.4,0,0.2,1);
 }
 .text-main { color: var(--color-text-main) !important; }
 .text-muted { color: var(--color-text-muted) !important; }
