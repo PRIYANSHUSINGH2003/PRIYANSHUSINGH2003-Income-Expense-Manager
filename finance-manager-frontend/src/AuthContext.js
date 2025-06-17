@@ -30,7 +30,7 @@ export function AuthProvider({ children }) {
     const res = await axios.post('http://localhost:5000/login', { username, password });
     setToken(res.data.token);
     localStorage.setItem('token', res.data.token);
-    setUser(res.data.profile); // profile includes username, role, profileImage
+    setUser(res.data.user); // user includes username, role, profileImage
   };
 
   const register = async (username, password, role = 'user') => {

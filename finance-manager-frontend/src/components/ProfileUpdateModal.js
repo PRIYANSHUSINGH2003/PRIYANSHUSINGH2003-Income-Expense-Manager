@@ -53,25 +53,30 @@ export default function ProfileUpdateModal({ open, onClose, user, onSave }) {
   };
 
   return (
-    <Modal open={open} onClose={onClose} title="Update Profile">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-        {/* Modern Avatar Upload */}
-        <div className="flex flex-col items-center mb-2">
+    <Modal open={open} onClose={onClose} widthClass="max-w-3xl">
+      <form onSubmit={handleSubmit} className="profile-modal-card flex flex-col gap-2">
+        <div className="profile-modal-title flex flex-col items-center gap-2 mb-2">
+          <span className="flex items-center gap-2">
+            <svg className="w-9 h-9 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            <span className="text-2xl font-extrabold tracking-tight">Update Profile</span>
+          </span>
+          <span className="text-base text-muted font-normal mt-1">Keep your account info up to date</span>
+        </div>
+        <div className="profile-modal-avatar relative flex flex-col items-center mb-4">
           <div className="relative group">
-            <div className="rounded-full ring-4 ring-primary/40 ring-offset-2 ring-offset-white dark:ring-offset-gray-900 shadow-xl bg-gradient-to-br from-primary/20 to-accent/20 transition-all duration-300 hover:scale-105">
-              <img
-                src={imagePreview || '/default-avatar.png'}
-                alt="Avatar Preview"
-                className="w-28 h-28 object-cover rounded-full border-4 border-white dark:border-gray-900 shadow-lg"
-              />
-            </div>
+            <img
+              src={imagePreview || '/default-avatar.png'}
+              alt="Avatar Preview"
+              className="profile-modal-avatar-img shadow-lg border-4 border-bg-surface dark:border-bg-surface transition-all duration-200 group-hover:brightness-90"
+            />
             <button
               type="button"
-              className="absolute bottom-2 right-2 bg-gradient-to-br from-primary to-accent text-white rounded-full p-2 shadow-lg border-2 border-white dark:border-gray-900 flex items-center justify-center hover:scale-110 transition-transform"
+              className="profile-modal-avatar-btn absolute bottom-2 right-2 bg-gradient-to-br from-primary to-accent text-white shadow-lg border-2 border-bg-surface dark:border-bg-surface group-hover:scale-110 focus:outline-none focus:ring-2 focus:ring-accent transition-all"
               onClick={handleAvatarClick}
-              tabIndex={-1}
+              tabIndex={0}
+              aria-label="Change avatar"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828L18 9.828M7 7h.01" /></svg>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828L18 9.828M7 7h.01" /></svg>
             </button>
             <input
               ref={fileInputRef}
@@ -81,17 +86,19 @@ export default function ProfileUpdateModal({ open, onClose, user, onSave }) {
               onChange={handleImageChange}
             />
           </div>
-          <div className="mt-2 text-gray-500 text-xs">Click the camera to change your photo</div>
+          <div className="profile-modal-label mt-2 text-sm text-muted">Click the camera to change your photo</div>
         </div>
-        <InputField label="Username" name="username" value={form.username} onChange={handleChange} required />
-        <InputField label="Email" name="email" type="email" value={form.email} onChange={handleChange} required />
-        <InputField label="Password" name="password" type="password" value={form.password} onChange={handleChange} placeholder="New password (optional)" />
-        {/* Optionally show avatar URL for fallback */}
-        {/* <InputField label="Avatar URL" name="avatar" value={form.avatar} onChange={handleChange} placeholder="https://..." /> */}
-        {error && <div className="text-red-500 text-sm">{error}</div>}
-        <div className="flex gap-2 justify-end mt-2">
-          <AnimatedButton type="button" className="bg-gray-400 hover:bg-gray-500" onClick={onClose}>Cancel</AnimatedButton>
-          <AnimatedButton type="submit" disabled={loading}>{loading ? 'Saving...' : 'Save'}</AnimatedButton>
+        <div className="profile-modal-fields flex flex-col gap-4 mb-2">
+          <InputField label="Username" name="username" value={form.username} onChange={handleChange} required inputClassName="profile-modal-input"/>
+          <InputField label="Email" name="email" type="email" value={form.email} onChange={handleChange} required inputClassName="profile-modal-input"/>
+          <InputField label="Password" name="password" type="password" value={form.password} onChange={handleChange} placeholder="New password (optional)" inputClassName="profile-modal-input" />
+        </div>
+        {error && <div className="profile-modal-error mt-2">{error}</div>}
+        <div className="profile-modal-btns flex gap-3 justify-end mt-4">
+          <button type="button" className="profile-modal-btn-cancel" onClick={onClose}>Cancel</button>
+          <AnimatedButton type="submit" className="profile-modal-btn" disabled={loading} loading={loading}>
+            Save
+          </AnimatedButton>
         </div>
       </form>
     </Modal>

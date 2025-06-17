@@ -18,7 +18,7 @@ export default function SignInGlassForm({ onSignIn }) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-app">
       <form
-        className="w-full max-w-md bg-glass shadow-glass backdrop-blur-xl rounded-3xl p-8 border border-white/20 dark:border-gray-700 flex flex-col gap-6 animate-fade-in"
+        className="w-full max-w-md bg-glass transition-glass shadow-glass backdrop-blur-xl rounded-3xl p-8 border border-white/20 dark:border-gray-700 flex flex-col gap-6 animate-fade-in"
         onSubmit={handleSubmit}
       >
         <h2 className="text-3xl font-extrabold text-center text-primary mb-2 drop-shadow">Sign In</h2>

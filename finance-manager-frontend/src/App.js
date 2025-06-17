@@ -269,44 +269,46 @@ function ProfileSection({ user, onBack }) {
   };
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 rounded-3xl shadow-2xl p-10 max-w-xl mx-auto mt-10 border border-primary/10">
-      <h2 className="text-3xl font-extrabold mb-6 text-primary dark:text-accent text-center flex items-center justify-center gap-2">
-        <svg className="w-8 h-8 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+    <div className="bg-white/70 dark:bg-gray-900/80 bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 rounded-3xl shadow-2xl p-10 max-w-xl mx-auto mt-10 border border-primary/10 backdrop-blur-xl">
+      <h2 className="text-3xl font-extrabold mb-8 text-primary dark:text-accent text-center flex items-center justify-center gap-3 drop-shadow">
+        <svg className="w-9 h-9 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
         Profile
       </h2>
-      <div className="flex flex-col items-center mb-6 relative">
-      <div className="relative group">
-      <Avatar src={imagePreview} alt={profile.username} size={110} />
-      <label className="absolute bottom-0 right-0 bg-primary dark:bg-accent text-white rounded-full p-2 shadow-lg cursor-pointer group-hover:scale-110 transition-transform border-2 border-white dark:border-gray-900">
-      <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828L18 9.828M7 7h.01" /></svg>
-      </label>
+      <div className="flex flex-col items-center mb-8 relative">
+        <div className="relative group">
+          <div className="rounded-full ring-4 ring-primary/40 ring-offset-2 ring-offset-white dark:ring-offset-gray-900 shadow-xl bg-gradient-to-br from-primary/20 to-accent/20 transition-all duration-300 hover:scale-105">
+            <Avatar src={imagePreview} alt={profile.username} size={120} />
+          </div>
+          <label className="absolute bottom-2 right-2 bg-gradient-to-br from-primary to-accent text-white rounded-full p-2 shadow-lg border-2 border-white dark:border-gray-900 flex items-center justify-center hover:scale-110 transition-transform cursor-pointer">
+            <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828L18 9.828M7 7h.01" /></svg>
+          </label>
+        </div>
+        <div className="mt-3 text-gray-500 dark:text-gray-400 text-sm">Click the camera to change your photo</div>
       </div>
-      <div className="mt-2 text-gray-500 dark:text-gray-400 text-sm">Click the camera to change your photo</div>
+      <div className="space-y-4 mb-8">
+        <div className="flex items-center gap-3 bg-white/60 dark:bg-gray-800/60 rounded-xl px-5 py-3 shadow border border-primary/10 dark:border-accent/10">
+          <svg className="w-6 h-6 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+          <span className="font-semibold text-gray-700 dark:text-gray-200">Username:</span>
+          <span className="text-gray-800 dark:text-gray-200">{profile.username}</span>
+        </div>
+        <div className="flex items-center gap-3 bg-white/60 dark:bg-gray-800/60 rounded-xl px-5 py-3 shadow border border-primary/10 dark:border-accent/10">
+          <svg className="w-6 h-6 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16 12H8m8 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+          <span className="font-semibold text-gray-700 dark:text-gray-200">Email:</span>
+          <span className="text-gray-800 dark:text-gray-200">{profile.email || 'N/A'}</span>
+        </div>
+        <div className="flex items-center gap-3 bg-white/60 dark:bg-gray-800/60 rounded-xl px-5 py-3 shadow border border-primary/10 dark:border-accent/10">
+          <svg className="w-6 h-6 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+          <span className="font-semibold text-gray-700 dark:text-gray-200">Online Profile:</span>
+          {onlineProfile ? <a href={onlineProfile} className="text-blue-600 dark:text-blue-300 underline" target="_blank" rel="noopener noreferrer">{onlineProfile}</a> : <span className="text-gray-800 dark:text-gray-200">N/A</span>}
+        </div>
       </div>
-      <div className="space-y-3 mb-6">
-      <div className="flex items-center gap-2">
-      <svg className="w-5 h-5 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-      <span className="font-semibold text-gray-700 dark:text-gray-200">Username:</span>
-      <span className="text-gray-800 dark:text-gray-200">{profile.username}</span>
-      </div>
-      <div className="flex items-center gap-2">
-      <svg className="w-5 h-5 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16 12H8m8 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-      <span className="font-semibold text-gray-700 dark:text-gray-200">Email:</span>
-      <span className="text-gray-800 dark:text-gray-200">{profile.email || 'N/A'}</span>
-      </div>
-      <div className="flex items-center gap-2">
-      <svg className="w-5 h-5 text-primary dark:text-accent" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
-      <span className="font-semibold text-gray-700 dark:text-gray-200">Online Profile:</span>
-      {onlineProfile ? <a href={onlineProfile} className="text-blue-600 dark:text-blue-300 underline" target="_blank" rel="noopener noreferrer">{onlineProfile}</a> : <span className="text-gray-800 dark:text-gray-200">N/A</span>}
-      </div>
-      </div>
-      <div className="flex gap-2 mt-8 justify-center">
-        <button className="px-6 py-2 bg-primary text-white rounded-xl font-bold shadow hover:bg-primary/90 transition" onClick={() => setModalOpen(true)}>
-          <svg className="w-5 h-5 inline-block mr-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+      <div className="flex gap-3 mt-8 justify-center">
+        <button className="px-7 py-2.5 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-bold shadow-lg hover:from-primary/90 hover:to-accent/90 transition-all duration-200 flex items-center gap-2" onClick={() => setModalOpen(true)}>
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
           Edit Profile
         </button>
-        <button className="px-6 py-2 bg-gray-400 text-white rounded-xl font-bold shadow hover:bg-gray-500 transition" onClick={onBack}>Back to Dashboard</button>
+        <button className="px-7 py-2.5 bg-gray-400 dark:bg-gray-700 text-white rounded-xl font-bold shadow-lg hover:bg-gray-500 dark:hover:bg-gray-600 transition-all duration-200" onClick={onBack}>Back to Dashboard</button>
       </div>
       {success && <div className="mt-6 text-green-600 font-semibold text-center">Profile updated successfully!</div>}
       <ProfileUpdateModal

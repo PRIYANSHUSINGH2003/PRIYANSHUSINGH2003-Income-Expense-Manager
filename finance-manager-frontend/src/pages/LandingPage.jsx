@@ -4,7 +4,7 @@ import CardGrid from '../components/CardGrid';
 import Alert from '../common/Alert';
 import ProgressBar from '../common/ProgressBar';
 import ThemeToggle from '../components/ThemeToggle';
-import { GuestAccessContext } from '../context/GuestAccessContext';
+import { useGuestAccess } from '../context/GuestAccessContext';
 import useMediaQuery from '../hooks/useMediaQuery';
 
 const features = [
@@ -31,7 +31,7 @@ const features = [
 ];
 
 const LandingPage = () => {
-  const { guestUses, maxGuestUses } = useContext(GuestAccessContext);
+  const { guestUses, maxGuestUses } = useContext(useGuestAccess);
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
