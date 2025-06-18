@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { api } from './utils/api';
 import { AuthProvider, useAuth } from './AuthContext';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
@@ -161,21 +162,24 @@ const [language, setLanguage] = useState(() => {
     }
   }, [darkMode]);
 
+  // Use environment variable for API base URL
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   const fetchStock = async () => {
-    const response = await axios.get('http://localhost:5000/stock');
-    setStock(response.data.stocks);
-    setNetProfitStock(response.data.netProfitStock);
+    const response = await api.get('/stock');
+    setStock(response.stocks);
+    setNetProfitStock(response.netProfitStock);
   };
 
   const fetchIncomeExpense = async () => {
-    const response = await axios.get('http://localhost:5000/income-expense');
-    setIncomeExpense(response.data.entries);
-    setNetProfit(response.data.netProfit);
+    const response = await api.get('/income-expense');
+    setIncomeExpense(response.entries);
+    setNetProfit(response.netProfit);
   };
 
   const addStock = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:5000/stock', stockForm);
+    await api.post('/stock', stockForm);
     setStockForm({ type: '', vendor: '', amount: '' });
     fetchStock();
     setSnackbar({ open: true, message: 'Stock added successfully!', severity: 'success' });
@@ -183,7 +187,7 @@ const [language, setLanguage] = useState(() => {
 
   const addEntry = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:5000/income-expense', entryForm);
+    await api.post('/income-expense', entryForm);
     setEntryForm({ category: '', amount: '', type: '' });
     fetchIncomeExpense();
     setSnackbar({ open: true, message: 'Entry added successfully!', severity: 'success' });
@@ -432,7 +436,7 @@ function ProfileSection({ user, onBack }) {
     if (imageFile) formData.append('avatar', imageFile);
     // Send formData to backend via axios
     try {
-      await axios.put('http://localhost:5000/api/profile', formData, {
+      await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/profile`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         withCredentials: true
       });

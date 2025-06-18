@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Badge from '../Badge';
 
-const API_URL = 'http://localhost:4013/api/gamification';
+const API_URL = process.env.REACT_APP_API_URL_GAMIFICATION || 'http://localhost:4013/api/gamification';
 
 const GamificationRewards = () => {
   const [rewards, setRewards] = useState([]);

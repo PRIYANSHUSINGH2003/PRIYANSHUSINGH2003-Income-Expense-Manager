@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const API_URL = 'http://localhost:4007/api/tax-estimate';
+const API_URL = process.env.REACT_APP_API_URL_TAX_ESTIMATE || 'http://localhost:4007/api/tax-estimate';
 
 const TaxEstimator = () => {
   const [taxData, setTaxData] = useState(null);

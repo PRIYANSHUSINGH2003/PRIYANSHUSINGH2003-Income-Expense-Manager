@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const API_URL = 'http://localhost:4010/api/moodboard';
+const API_URL = process.env.REACT_APP_API_URL_MOODBOARD || 'http://localhost:4010/api/moodboard';
 
 const FinancialMoodboard = () => {
   const [entries, setEntries] = useState([]);

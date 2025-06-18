@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const API_URL = 'http://localhost:4004/api/health-score';
+const API_URL = process.env.REACT_APP_API_URL_HEALTH_SCORE || 'http://localhost:4004/api/health-score';
 
 const getScoreColor = (score) => {
   if (score >= 80) return 'bg-green-400';

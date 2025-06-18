@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const API_URL = 'http://localhost:4014/api/bill-negotiator';
+const API_URL = process.env.REACT_APP_API_URL_BILL_NEGOTIATOR || 'http://localhost:4014/api/bill-negotiator';
 
 const BillNegotiator = () => {
   const [bills, setBills] = useState([]);

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { api } from './utils/api';
 
 const AuthContext = createContext();
 
@@ -12,12 +13,15 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
 
+  // Use environment variable for API base URL
+  // const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   useEffect(() => {
     if (token) {
       // Fetch user profile from backend for latest info (including profileImage)
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      axios.get('http://localhost:5000/profile')
-        .then(res => setUser(res.data))
+      api.get('/profile')
+        .then(res => setUser(res))
         .catch(() => setUser(null));
     } else {
       setUser(null);
@@ -27,14 +31,14 @@ export function AuthProvider({ children }) {
   }, [token]);
 
   const login = async (username, password) => {
-    const res = await axios.post('http://localhost:5000/login', { username, password });
-    setToken(res.data.token);
-    localStorage.setItem('token', res.data.token);
-    setUser(res.data.user); // user includes username, role, profileImage
+    const res = await api.post('/login', { username, password });
+    setToken(res.token);
+    localStorage.setItem('token', res.token);
+    setUser(res.user); // user includes username, role, profileImage
   };
 
   const register = async (username, password, role = 'user') => {
-    await axios.post('http://localhost:5000/register', { username, password, role });
+    await api.post('/register', { username, password, role });
   };
 
   const updateProfileImage = async (file) => {
@@ -42,10 +46,10 @@ export function AuthProvider({ children }) {
     const formData = new FormData();
     formData.append('profileImage', file);
     formData.append('username', user.username);
-    const res = await axios.post('http://localhost:5000/profile/image', formData, {
+    const res = await api.post('/profile/image', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
-    setUser(prev => ({ ...prev, profileImage: res.data.profileImage }));
+    setUser(prev => ({ ...prev, profileImage: res.profileImage }));
   };
 
   const logout = () => {

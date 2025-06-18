@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const API_URL = 'http://localhost:4003/api/charity-donations';
+const API_URL = process.env.REACT_APP_API_URL_CHARITY_DONATIONS || 'http://localhost:4003/api/charity-donations';
 
 const CharityImpactTracker = () => {
   const [donations, setDonations] = useState([]);

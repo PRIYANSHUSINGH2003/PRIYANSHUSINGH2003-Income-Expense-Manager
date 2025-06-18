@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const API_URL = 'http://localhost:4011/api/time-machine';
+const API_URL = process.env.REACT_APP_API_URL_TIME_MACHINE || 'http://localhost:4011/api/time-machine';
 
 const FinancialTimeMachine = () => {
   const [snapshots, setSnapshots] = useState([]);

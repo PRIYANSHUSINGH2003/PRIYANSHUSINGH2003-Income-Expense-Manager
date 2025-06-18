@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const API_URL = 'http://localhost:4001/api/product-info';
+const API_URL = process.env.REACT_APP_API_URL_PRODUCT_INFO || 'http://localhost:4001/api/product-info';
 
 const dummyWishlist = [
   {
