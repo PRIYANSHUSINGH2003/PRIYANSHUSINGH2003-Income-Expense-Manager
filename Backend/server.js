@@ -1,4 +1,3 @@
-// Backend: Node.js with Express (server.js)
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -9,7 +8,8 @@ app.use(express.json());
 app.use(cors());
 
 // Database Connection
-mongoose.connect('mongodb+srv://priyanshusingh00004:110044@cluster0.zy000zt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+const mongoURI = process.env.MONGODB_URI || "fdfdflkdf";
+mongoose.connect(mongoURI, {
     serverSelectionTimeoutMS: 5000, // Adjusted timeout for server selection
     socketTimeoutMS: 45000, // Consider increasing socket timeout
     connectTimeoutMS: 30000,
@@ -38,4 +38,5 @@ app.use('/', require('./routes/billNegotiator'));
 app.use('/profile_images', express.static('profile_images'));
 
 // Start Server
-app.listen(5000, () => console.log('Server running on port 5000'));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
