@@ -46,7 +46,8 @@ Make sure you have a backend running at `http://localhost:5000` with the followi
 3. Open `http://localhost:3000` in your browser.
 
 ## Screenshots
-![Income Expense Manager Screenshot](https://github.com/user-attachments/assets/e62ba594-87b8-4ba2-aabd-27859110bb2b)
+![image](https://github.com/user-attachments/assets/a3eb00e8-0711-4d00-9cda-9e8341498dcf)
+
 
 
 ## License
