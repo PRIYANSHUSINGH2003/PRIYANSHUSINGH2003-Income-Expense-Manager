@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(cors());
 
 // Database Connection
-const mongoURI = process.env.MONGODB_URI || "fdfdflkdf";
+const mongoURI = process.env.MONGODB_URI || 'mongodb+srv://priyanshusingh00004:110044@cluster0.zy000zt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 mongoose.connect(mongoURI, {
     serverSelectionTimeoutMS: 5000, // Adjusted timeout for server selection
     socketTimeoutMS: 45000, // Consider increasing socket timeout
