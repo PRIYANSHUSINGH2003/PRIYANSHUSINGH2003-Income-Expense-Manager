@@ -60,13 +60,24 @@ function IncomeExpense({ incomeExpense = [], netProfit, entryForm, setEntryForm,
           <form onSubmit={addEntry} className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
             <div>
               <label className="block mb-1 font-semibold text-fuchsia-700 dark:text-fuchsia-200">Category</label>
-              <SelectDropdown
-                options={categories.length ? categories.map(c => ({ label: c, value: c })) : []}
-                value={entryForm.category}
-                onChange={val => setEntryForm({ ...entryForm, category: val })}
-                placeholder="Select or type category"
-                allowCustom
-              />
+              {categories.length ? (
+                <SelectDropdown
+                  options={categories.map(c => ({ label: c, value: c }))}
+                  value={entryForm.category}
+                  onChange={val => setEntryForm({ ...entryForm, category: val })}
+                  placeholder="Select or type category"
+                  allowCustom
+                />
+              ) : (
+                <input
+                  type="text"
+                  className="w-full px-4 py-2 rounded-xl border border-fuchsia-200 dark:border-fuchsia-700 bg-white dark:bg-gray-800 focus:border-fuchsia-400 focus:ring-2 focus:ring-fuchsia-100 dark:focus:ring-fuchsia-900 outline-none transition shadow"
+                  placeholder="Enter category"
+                  value={entryForm.category}
+                  onChange={e => setEntryForm({ ...entryForm, category: e.target.value })}
+                  required
+                />
+              )}
             </div>
             <div>
               <label className="block mb-1 font-semibold text-fuchsia-700 dark:text-fuchsia-200">Amount</label>
@@ -118,7 +129,7 @@ function IncomeExpense({ incomeExpense = [], netProfit, entryForm, setEntryForm,
           <div className="flex gap-2">
             <input
               type="text"
-              className="px-4 py-2 rounded-xl border border-fuchsia-200 dark:border-fuchsia-700 bg-white dark:bg-gray-800 focus:border-fuchsia-400 focus:ring-2 focus:ring-fuchsia-100 dark:focus:ring-fuchsia-900 outline-none transition shadow"
+              className="px-4 py-2 rounded-xl border border-fuchsia-200 dark:border-fuchsia-700 text-gray-400 bg-white dark:bg-gray-800 focus:border-fuchsia-400 focus:ring-2 focus:ring-fuchsia-100 dark:focus:ring-fuchsia-900 outline-none transition shadow"
               placeholder="Search by category or type..."
               value={search}
               onChange={e => setSearch(e.target.value)}
@@ -148,11 +159,11 @@ function IncomeExpense({ incomeExpense = [], netProfit, entryForm, setEntryForm,
               )}
               {searchedEntries.map((entry, index) => (
                 <tr key={index} className={`transition hover:bg-fuchsia-50/80 dark:hover:bg-fuchsia-900/40 ${index % 2 === 0 ? 'bg-white/80 dark:bg-gray-800/80' : 'bg-fuchsia-50/60 dark:bg-fuchsia-900/30'}`}>
-                  <td className="px-6 py-3">{entry.category}</td>
+                  <td className="px-6 py-3 text-gray-300">{entry.category}</td>
                   <td className="px-6 py-3">
                     <span className={`inline-block px-4 py-1 rounded-full font-semibold text-sm shadow ${entry.type === 'income' ? 'bg-green-200 text-green-900 dark:bg-green-700 dark:text-green-100' : 'bg-red-200 text-red-900 dark:bg-red-700 dark:text-red-100'}`}>{entry.type === 'income' ? 'Income' : 'Expense'}</span>
                   </td>
-                  <td className="px-6 py-3 font-bold">₹{entry.amount}</td>
+                  <td className="px-6 py-3 font-bold text-gray-300">₹{entry.amount}</td>
                 </tr>
               ))}
             </tbody>

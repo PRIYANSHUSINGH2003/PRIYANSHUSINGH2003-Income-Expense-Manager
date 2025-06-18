@@ -35,6 +35,15 @@ html.dark {
 .text-accent-foreground { color: var(--color-accent-foreground) !important; }
 .bg-accent-foreground { background-color: var(--color-accent-foreground) !important; }
 .bg-surface { background-color: var(--color-bg-surface) !important; }
+
+/* Dark mode text utility variants */
+.dark .text-primary { color: var(--color-primary) !important; }
+.dark .text-primary-foreground { color: var(--color-primary-foreground) !important; }
+.dark .text-accent { color: var(--color-accent) !important; }
+.dark .text-accent-foreground { color: var(--color-accent-foreground) !important; }
+.dark .text-main { color: var(--color-text-main) !important; }
+.dark .text-muted { color: var(--color-text-muted) !important; }
+
 .transition-glass {
   transition:
     background 0.5s cubic-bezier(0.4,0,0.2,1),

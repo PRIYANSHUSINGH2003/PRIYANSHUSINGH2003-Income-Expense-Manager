@@ -9,6 +9,7 @@ import Notification from '../common/Notification';
 import Alert from '../common/Alert';
 import { Pie, Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
+import CreateEntryModal from '../components/CreateEntryModal';
 
 const summaryData = [
   { label: 'Income', value: 12000, icon: 'wallet', color: 'from-green-400 to-blue-400', trend: 'up', trendValue: '+8%' },
@@ -46,6 +47,7 @@ const barData = {
 export default function DashboardHome() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [showNotif, setShowNotif] = useState(false);
+  const [showAddEntry, setShowAddEntry] = useState(false);
   const categories = ['All', 'Health', 'Travel', 'Food', 'Shopping'];
 
   const filteredPieData = activeCategory === 'All'
@@ -73,9 +75,18 @@ export default function DashboardHome() {
         </div>
         <div className="flex gap-3">
           <AnimatedButton onClick={() => setShowNotif(true)}>Show Alert</AnimatedButton>
-          <AnimatedButton>+ Add Entry</AnimatedButton>
+          <AnimatedButton onClick={() => setShowAddEntry(true)}>+ Add Entry</AnimatedButton>
         </div>
       </div>
+      {/* Add Entry Modal */}
+      <CreateEntryModal
+        open={showAddEntry}
+        onClose={() => setShowAddEntry(false)}
+        onCreate={entry => {
+          alert('Entry created: ' + JSON.stringify(entry));
+          setShowAddEntry(false);
+        }}
+      />
       {/* Notification/Alert */}
       {showNotif && (
         <Notification message="Budget limit reached!" type="warning" onClose={() => setShowNotif(false)} />
@@ -92,7 +103,7 @@ export default function DashboardHome() {
                 {item.trendValue}
               </Badge>
             </div>
-            <div className="mb-2 text-4xl">
+            <div className="mb-2 text-4xl text-primary">
               <Icon name={item.icon} />
             </div>
             <SectionTitle className="mb-1 text-lg">{item.label}</SectionTitle>
