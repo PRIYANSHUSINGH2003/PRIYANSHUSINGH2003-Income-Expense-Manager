@@ -46,9 +46,8 @@ Make sure you have a backend running at `http://localhost:5000` with the followi
 3. Open `http://localhost:3000` in your browser.
 
 ## Screenshots
-![image](https://github.com/user-attachments/assets/a3eb00e8-0711-4d00-9cda-9e8341498dcf)
-
-
+![image](https://github.com/user-attachments/assets/9efbfd63-1cab-406a-97a0-3c62ab76f690)
+![image](https://github.com/user-attachments/assets/46ff3c84-2722-45f2-a5b2-4c7840184d13)
 
 ## License
 This project is licensed under the MIT License.
