@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 import { AuthProvider, useAuth } from './AuthContext';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
@@ -162,20 +164,20 @@ const [language, setLanguage] = useState(() => {
   }, [darkMode]);
 
   const fetchStock = async () => {
-    const response = await axios.get('http://localhost:5000/stock');
+    const response = await axios.get(`${API_BASE_URL}/stock`);
     setStock(response.data.stocks);
     setNetProfitStock(response.data.netProfitStock);
   };
 
   const fetchIncomeExpense = async () => {
-    const response = await axios.get('http://localhost:5000/income-expense');
+    const response = await axios.get(`${API_BASE_URL}/income-expense`);
     setIncomeExpense(response.data.entries);
     setNetProfit(response.data.netProfit);
   };
 
   const addStock = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:5000/stock', stockForm);
+    await axios.post(`${API_BASE_URL}/stock`, stockForm);
     setStockForm({ type: '', vendor: '', amount: '' });
     fetchStock();
     setSnackbar({ open: true, message: 'Stock added successfully!', severity: 'success' });
@@ -183,7 +185,7 @@ const [language, setLanguage] = useState(() => {
 
   const addEntry = async (e) => {
     e.preventDefault();
-    await axios.post('http://localhost:5000/income-expense', entryForm);
+    await axios.post(`${API_BASE_URL}/income-expense`, entryForm);
     setEntryForm({ category: '', amount: '', type: '' });
     fetchIncomeExpense();
     setSnackbar({ open: true, message: 'Entry added successfully!', severity: 'success' });
@@ -432,7 +434,7 @@ function ProfileSection({ user, onBack }) {
     if (imageFile) formData.append('avatar', imageFile);
     // Send formData to backend via axios
     try {
-      await axios.put('http://localhost:5000/api/profile', formData, {
+      await axios.put(`${API_BASE_URL}/api/profile`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         withCredentials: true
       });

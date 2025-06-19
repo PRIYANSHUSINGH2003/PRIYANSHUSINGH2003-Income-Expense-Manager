@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const API_URL = 'http://localhost:4006/api/eco-spending';
+const API_URL = process.env.REACT_APP_API_URL_ECO_SPENDING || 'http://localhost:4006/api/eco-spending';
 
 const EcoSpendingAnalyzer = () => {
   const [ecoData, setEcoData] = useState(null);

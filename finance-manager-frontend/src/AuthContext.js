@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 const AuthContext = createContext();
 
 export function useAuth() {
@@ -16,7 +18,7 @@ export function AuthProvider({ children }) {
     if (token) {
       // Fetch user profile from backend for latest info (including profileImage)
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      axios.get('http://localhost:5000/profile')
+      axios.get(`${API_BASE_URL}/profile`)
         .then(res => setUser(res.data))
         .catch(() => setUser(null));
     } else {
@@ -27,14 +29,14 @@ export function AuthProvider({ children }) {
   }, [token]);
 
   const login = async (username, password) => {
-    const res = await axios.post('http://localhost:5000/login', { username, password });
+    const res = await axios.post(`${API_BASE_URL}/login`, { username, password });
     setToken(res.data.token);
     localStorage.setItem('token', res.data.token);
     setUser(res.data.user); // user includes username, role, profileImage
   };
 
   const register = async (username, password, role = 'user') => {
-    await axios.post('http://localhost:5000/register', { username, password, role });
+    await axios.post(`${API_BASE_URL}/register`, { username, password, role });
   };
 
   const updateProfileImage = async (file) => {
@@ -42,7 +44,7 @@ export function AuthProvider({ children }) {
     const formData = new FormData();
     formData.append('profileImage', file);
     formData.append('username', user.username);
-    const res = await axios.post('http://localhost:5000/profile/image', formData, {
+    const res = await axios.post(`${API_BASE_URL}/profile/image`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
     setUser(prev => ({ ...prev, profileImage: res.data.profileImage }));

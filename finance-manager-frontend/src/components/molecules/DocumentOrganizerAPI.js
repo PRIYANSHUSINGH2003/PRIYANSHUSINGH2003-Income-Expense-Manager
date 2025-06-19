@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const API_URL = 'http://localhost:4009/api/documents';
+const API_URL = process.env.REACT_APP_API_URL_DOCUMENTS || 'http://localhost:4009/api/documents';
 
 const DocumentOrganizerAPI = () => {
   const [docs, setDocs] = useState([]);

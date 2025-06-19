@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const API_URL = 'http://localhost:4015/api/anomaly-detector';
+const API_URL = process.env.REACT_APP_API_URL_ANOMALY_DETECTOR || 'http://localhost:4015/api/anomaly-detector';
 
 const AnomalyDetector = () => {
   const [anomalies, setAnomalies] = useState([]);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const API_URL = 'http://localhost:4005/api/bill-splits';
+const API_URL = process.env.REACT_APP_API_URL_BILL_SPLITS || 'http://localhost:4005/api/bill-splits';
 
 const SmartBillSplitter = () => {
   const [bills, setBills] = useState([]);

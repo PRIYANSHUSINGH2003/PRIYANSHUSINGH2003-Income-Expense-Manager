@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const API_URL = 'http://localhost:4012/api/shared-wallets';
+const API_URL = process.env.REACT_APP_API_URL_SHARED_WALLETS || 'http://localhost:4012/api/shared-wallets';
 
 const SharedWallets = () => {
   const [wallets, setWallets] = useState([]);

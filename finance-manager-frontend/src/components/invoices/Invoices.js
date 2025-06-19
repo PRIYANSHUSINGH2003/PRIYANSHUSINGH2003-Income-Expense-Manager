@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { api } from '../../utils/api';
 
 // Helper to get user profile info (simulate, or fetch from backend if available)
 const getUserProfile = async () => {
@@ -49,10 +50,13 @@ function Invoices() {
     setLogo(localStorage.getItem('invoiceLogo') || '');
   }, []);
 
+  // Use environment variable for API base URL
+  // const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
   const fetchInvoices = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/invoices');
-      setInvoiceList(res.data.invoices || []);
+      const res = await api.get('/invoices');
+      setInvoiceList(res.invoices || []);
     } catch (err) { setInvoiceList([]); }
   };
 
@@ -84,7 +88,7 @@ function Invoices() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // For demo, logo is not sent to backend. In real app, upload logo and store path.
-    const res = await axios.post('http://localhost:5000/generate-invoice', {
+    const res = await api.post('/generate-invoice', {
       customerName: details.customerName,
       items: items.map(i => ({ name: i.name, price: Number(i.price) * Number(i.qty) })),
       total,
@@ -95,7 +99,7 @@ function Invoices() {
       contact: profile.contact,
       editInvoiceId,
     });
-    setBillNumber(res.data.billNumber || null); // NEW
+    setBillNumber(res.billNumber || null); // NEW
     setSnackbar({ open: true, message: editInvoiceId ? 'Invoice updated!' : 'Invoice generated successfully!' });
     setDetails({ customerName: '', patientName: '', vehicle: '', date: new Date().toISOString().slice(0, 10), notes: '' });
     setItems([{ name: '', qty: 1, price: '', tax: 0 }]);
