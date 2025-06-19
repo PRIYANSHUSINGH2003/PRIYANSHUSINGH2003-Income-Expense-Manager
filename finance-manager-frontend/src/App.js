@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 import { AuthProvider, useAuth } from './AuthContext';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
@@ -15,13 +13,14 @@ import ProfileUpdateModal from './components/ProfileUpdateModal';
 import Avatar from './components/Avatar';
 import Reports from './pages/Reports';
 import DraggableDevInfo from './components/DraggableDevInfo';
-
 // --- Modern SaaS Header Components ---
 import SearchInput from './components/SearchInput';
 import NotificationBell from './components/NotificationBell';
 import UserMenu from './components/UserMenu';
 import ThemeToggle from './components/ThemeToggle';
 // -------------------------------------
+
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 // Icon SVGs for custom iconography
 const icons = {
