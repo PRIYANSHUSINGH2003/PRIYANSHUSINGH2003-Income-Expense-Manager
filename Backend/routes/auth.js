@@ -19,6 +19,8 @@ const upload = multer({ storage });
 
 router.post('/register', authController.register);
 router.post('/login', authController.login);
+// Activation link endpoint
+router.post('/activate', authController.activateUser);
 router.get('/profile', authenticateJWT, authController.getProfile);
 router.post('/profile/image', authenticateJWT, upload.single('profileImage'), authController.updateProfileImage);
 

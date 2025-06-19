@@ -35,8 +35,8 @@ export function AuthProvider({ children }) {
     setUser(res.data.user); // user includes username, role, profileImage
   };
 
-  const register = async (username, password, role = 'user') => {
-    await axios.post(`${API_BASE_URL}/register`, { username, password, role });
+  const register = async (username, password, role = 'user', email) => {
+  await axios.post(`${API_BASE_URL}/register`, { username, password, role, email });
   };
 
   const updateProfileImage = async (file) => {

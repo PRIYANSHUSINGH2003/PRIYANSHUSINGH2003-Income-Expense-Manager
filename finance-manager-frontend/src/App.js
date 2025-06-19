@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider, useAuth } from './AuthContext';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import ActivateAccount from './components/auth/ActivateAccount';
 import DashboardHome from './dashboard/DashboardHome';
 import Dashboard from './components/dashboard/Dashboard';
 import Stock from './components/dashboard/Stock';
@@ -509,7 +511,12 @@ function ProfileSection({ user, onBack }) {
 export default function App() {
   return (
     <AuthProvider>
-      <MainApp />
+      <Router>
+        <Routes>
+          <Route path="/activate" element={<ActivateAccount />} />
+          <Route path="/*" element={<MainApp />} />
+        </Routes>
+      </Router>
       <DraggableDevInfo />
     </AuthProvider>
   );

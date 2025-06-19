@@ -6,4 +6,48 @@ function isTempEmail(email) {
   return tempDomains.some(domain => email && email.toLowerCase().includes(domain));
 }
 
-module.exports = { isTempEmail };
+// Send email utility using nodemailer
+const nodemailer = require('nodemailer');
+async function sendEmail({ to, subject, text, html }) {
+  let transporterConfig;
+  if (process.env.EMAIL_SERVICE && process.env.EMAIL_SERVICE.toLowerCase() === 'gmail') {
+    // Use Gmail service
+    transporterConfig = {
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    };
+  } else if (process.env.EMAIL_HOST && process.env.EMAIL_PORT) {
+    // Use custom SMTP (e.g., Ethereal)
+    transporterConfig = {
+      host: process.env.EMAIL_HOST,
+      port: parseInt(process.env.EMAIL_PORT, 10),
+      secure: false, // Most dev/test SMTP use STARTTLS, not SSL
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    };
+  } else {
+    // Fallback to service or default to Gmail
+    transporterConfig = {
+      service: process.env.EMAIL_SERVICE || 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    };
+  }
+  const transporter = nodemailer.createTransport(transporterConfig);
+  await transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to,
+    subject,
+    text,
+    html
+  });
+}
+
+module.exports = { isTempEmail, sendEmail };
