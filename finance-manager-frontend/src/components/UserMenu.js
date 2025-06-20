@@ -1,6 +1,12 @@
 import React, { useRef, useState } from 'react';
 import useClickOutside from '../hooks/useClickOutside';
 import Avatar from './Avatar';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+function getProfileImageUrl(profileImage) {
+  return profileImage && !profileImage.startsWith('http')
+    ? `${API_BASE_URL}${profileImage}`
+    : profileImage;
+}
 
 export default function UserMenu({ user, onLogout, onProfile, onSettings }) {
   const [open, setOpen] = useState(false);
@@ -9,7 +15,7 @@ export default function UserMenu({ user, onLogout, onProfile, onSettings }) {
   return (
     <div className="relative" ref={ref}>
       <button className="flex items-center gap-2 p-2 rounded-full bg-glass shadow hover:bg-primary/10 dark:hover:bg-primary/20" onClick={() => setOpen(v => !v)}>
-        <Avatar alt={user?.username || 'U'} size={36} />
+        <Avatar src={getProfileImageUrl(user?.profileImage)} alt={user?.username || 'U'} size={36} />
         <span className="font-semibold text-accent">{user?.username || 'User'}</span>
       </button>
       {open && (

@@ -9,6 +9,7 @@ const StockSchema = new mongoose.Schema({
 const Stock = mongoose.models.Stock || mongoose.model('Stock', StockSchema);
 
 const IncomeExpenseSchema = new mongoose.Schema({
+    userId: { type: String, required: true },
     category: String,
     amount: Number,
     type: String, // income or expense
@@ -34,6 +35,9 @@ async function getStock(req, res) {
 
 // Add income/expense
 async function addIncomeExpense(req, res) {
+    if (!req.body.userId) {
+        return res.status(400).json({ error: 'userId is required' });
+    }
     const entry = new IncomeExpense(req.body);
     await entry.save();
     res.json(entry);
@@ -41,7 +45,11 @@ async function addIncomeExpense(req, res) {
 
 // Get income/expense
 async function getIncomeExpense(req, res) {
-    const entries = await IncomeExpense.find();
+    const userId = req.query.userId || req.body.userId;
+    if (!userId) {
+        return res.status(400).json({ error: 'userId is required to fetch entries' });
+    }
+    const entries = await IncomeExpense.find({ userId });
     const totalIncome = entries.filter(e => e.type === 'income').reduce((sum, e) => sum + e.amount, 0);
     const totalExpense = entries.filter(e => e.type === 'expense').reduce((sum, e) => sum + e.amount, 0);
     res.json({ entries, netProfit: totalIncome - totalExpense });

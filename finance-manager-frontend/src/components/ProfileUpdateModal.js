@@ -2,8 +2,10 @@ import React, { useState, useRef } from 'react';
 import Modal from './Modal';
 import InputField from './InputField';
 import AnimatedButton from './AnimatedButton';
+import { useAuth } from '../AuthContext';
 
 export default function ProfileUpdateModal({ open, onClose, user, onSave }) {
+  const { updateProfileImage } = useAuth();
   const [form, setForm] = useState({
     username: user?.username || '',
     email: user?.email || '',
@@ -13,6 +15,7 @@ export default function ProfileUpdateModal({ open, onClose, user, onSave }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [imagePreview, setImagePreview] = useState(user?.avatar || '');
+  const [imageFile, setImageFile] = useState(null);
   const fileInputRef = useRef();
 
   const handleChange = e => {
@@ -23,6 +26,7 @@ export default function ProfileUpdateModal({ open, onClose, user, onSave }) {
   const handleImageChange = e => {
     const file = e.target.files[0];
     if (file) {
+      setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
@@ -41,12 +45,21 @@ export default function ProfileUpdateModal({ open, onClose, user, onSave }) {
     setLoading(true);
     setError('');
     try {
-      // Simulate API call
-      await new Promise(res => setTimeout(res, 1000));
+      if (imageFile) {
+        const res = await updateProfileImage(imageFile);
+        setImagePreview(res.profileImage); // Use the new URL for preview
+      }
+      // You can add more profile update logic here (username, email, etc.)
       onSave && onSave(form);
       onClose();
     } catch (err) {
-      setError('Failed to update profile.');
+      setError(
+        'Failed to update profile. ' +
+        (err?.response?.data?.error ? err.response.data.error + '. ' : '') +
+        (err?.response?.data?.message ? err.response.data.message + '. ' : '') +
+        (err?.response?.data?.details ? err.response.data.details + '. ' : '') +
+        (err?.message || '')
+      );
     } finally {
       setLoading(false);
     }
@@ -65,7 +78,9 @@ export default function ProfileUpdateModal({ open, onClose, user, onSave }) {
         <div className="profile-modal-avatar relative flex flex-col items-center mb-4">
           <div className="relative group">
             <img
-              src={imagePreview || '/default-avatar.png'}
+              src={imagePreview && !imagePreview.startsWith('http') && !imagePreview.startsWith('data:')
+                ? `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${imagePreview}`
+                : (imagePreview || '/default-avatar.png')}
               alt="Avatar Preview"
               className="profile-modal-avatar-img shadow-lg border-4 border-bg-surface dark:border-bg-surface transition-all duration-200 group-hover:brightness-90"
             />

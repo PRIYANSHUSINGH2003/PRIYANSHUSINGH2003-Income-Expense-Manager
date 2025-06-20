@@ -24,6 +24,12 @@ import ThemeToggle from './components/ThemeToggle';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
+function getProfileImageUrl(profileImage) {
+  return profileImage && !profileImage.startsWith('http')
+    ? `${API_BASE_URL}${profileImage}`
+    : profileImage;
+}
+
 // Icon SVGs for custom iconography
 const icons = {
   dashboard: (
@@ -123,36 +129,38 @@ const icons = {
 const drawerWidth = 240;
 
 function MainApp() {
-const [stock, setStock] = useState([]);
-const [incomeExpense, setIncomeExpense] = useState([]);
-const [netProfitStock, setNetProfitStock] = useState(0);
-const [netProfit, setNetProfit] = useState(0);
+  const { user, loading, logout } = useAuth();
+  const [stock, setStock] = useState([]);
+  const [incomeExpense, setIncomeExpense] = useState([]);
+  const [netProfitStock, setNetProfitStock] = useState(0);
+  const [netProfit, setNetProfit] = useState(0);
 
-const [stockForm, setStockForm] = useState({ type: '', vendor: '', amount: '' });
-const [entryForm, setEntryForm] = useState({ category: '', amount: '', type: '' });
+  const [stockForm, setStockForm] = useState({ type: '', vendor: '', amount: '' });
+  const [entryForm, setEntryForm] = useState({ category: '', amount: '', type: '' });
 
-const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
-const [mobileOpen, setMobileOpen] = useState(false);
-const [selectedSection, setSelectedSection] = useState('dashboard');
-const [darkMode, setDarkMode] = useState(() => {
-// System preference detection
-if (typeof window !== 'undefined') {
-return localStorage.getItem('theme') === 'dark' || 
-(!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
-}
-return false;
-});
-const [language, setLanguage] = useState(() => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('language') || 'en';
-  }
-  return 'en';
-});
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [selectedSection, setSelectedSection] = useState('dashboard');
+  const [darkMode, setDarkMode] = useState(() => {
+    // System preference detection
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') === 'dark' || 
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+    return false;
+  });
+  const [language, setLanguage] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('language') || 'en';
+    }
+    return 'en';
+  });
 
   useEffect(() => {
     fetchStock();
     fetchIncomeExpense();
-  }, []);
+    // eslint-disable-next-line
+  }, [user]);
 
   useEffect(() => {
     if (darkMode) {
@@ -171,7 +179,10 @@ const [language, setLanguage] = useState(() => {
   };
 
   const fetchIncomeExpense = async () => {
-    const response = await axios.get(`${API_BASE_URL}/income-expense`);
+    if (!user || !(user._id || user.username)) return;
+    const userId = user._id || user.username;
+    const response = await axios.get(`${API_BASE_URL}/income-expense`, { params: { userId } });
+    console.log('Fetched income/expense for user:', userId, response.data);
     setIncomeExpense(response.data.entries);
     setNetProfit(response.data.netProfit);
   };
@@ -186,7 +197,10 @@ const [language, setLanguage] = useState(() => {
 
   const addEntry = async (e) => {
     e.preventDefault();
-    await axios.post(`${API_BASE_URL}/income-expense`, entryForm);
+    if (!user || !(user._id || user.username)) return;
+    const userId = user._id || user.username;
+    console.log('Submitting entry:', { ...entryForm, userId });
+    await axios.post(`${API_BASE_URL}/income-expense`, { ...entryForm, userId });
     setEntryForm({ category: '', amount: '', type: '' });
     fetchIncomeExpense();
     setSnackbar({ open: true, message: 'Entry added successfully!', severity: 'success' });
@@ -210,7 +224,6 @@ const [language, setLanguage] = useState(() => {
   { key: 'reports', label: 'Reports', icon: icons.report },
   ];
 
-  const { user, loading, logout } = useAuth();
   const [showRegister, setShowRegister] = useState(false);
 
   if (loading) return null;
@@ -249,7 +262,10 @@ const [language, setLanguage] = useState(() => {
           <NotificationBell notifications={['Budget limit reached!', 'New invoice paid']} />
           <ThemeToggle darkMode={darkMode} setDarkMode={setDarkMode} />
           <UserMenu
-            user={user}
+            user={{
+              ...user,
+              profileImage: getProfileImageUrl(user?.profileImage)
+            }}
             onLogout={logout}
             onProfile={() => setSelectedSection('profile')}
             onSettings={() => setSelectedSection('settings')}
@@ -457,7 +473,11 @@ function ProfileSection({ user, onBack }) {
       <div className="flex flex-col items-center mb-8 relative">
         <div className="relative group">
           <div className="rounded-full ring-4 ring-primary/40 ring-offset-2 ring-offset-white dark:ring-offset-gray-900 shadow-xl bg-gradient-to-br from-primary/20 to-accent/20 transition-all duration-300 hover:scale-105">
-            <Avatar src={imagePreview} alt={profile.username} size={120} />
+            <Avatar 
+              src={getProfileImageUrl(profile.profileImage || imagePreview)}
+              alt={profile.username}
+              size={120}
+            />
           </div>
           <label className="absolute bottom-2 right-2 bg-gradient-to-br from-primary to-accent text-white rounded-full p-2 shadow-lg border-2 border-white dark:border-gray-900 flex items-center justify-center hover:scale-110 transition-transform cursor-pointer">
             <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />

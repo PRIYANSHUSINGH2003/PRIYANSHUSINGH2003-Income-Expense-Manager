@@ -1,6 +1,12 @@
 import React, { useRef, useState, useContext } from 'react';
 import useClickOutside from '../hooks/useClickOutside';
 import Avatar from './Avatar';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+function getProfileImageUrl(profileImage) {
+  return profileImage && !profileImage.startsWith('http')
+    ? `${API_BASE_URL}${profileImage}`
+    : profileImage;
+}
 import DropdownMenu from './DropdownMenu';
 import ProfileUpdateModal from './ProfileUpdateModal';
 import { ThemeContext } from '../context/ThemeContext';
@@ -31,13 +37,13 @@ export default function ProfileDropdown({ user, onLogout }) {
         onClick={() => setOpen((v) => !v)}
         aria-label="Open profile menu"
       >
-        <Avatar alt={user?.username || 'U'} size={38} />
+        <Avatar src={getProfileImageUrl(user?.profileImage)} alt={user?.username || 'U'} size={38} />
         <span className="font-bold text-lg text-primary dark:text-accent drop-shadow-sm tracking-wide">{user?.username || 'User'}</span>
       </button>
       {open && (
         <DropdownMenu className="absolute right-0 mt-2 w-60 bg-white/80 dark:bg-gray-900/90 rounded-2xl shadow-2xl z-50 border border-primary/10 dark:border-accent/10 animate-fade-in-up backdrop-blur-xl">
           <div className="px-5 pt-5 pb-2 flex flex-col items-center border-b border-primary/10 dark:border-accent/10">
-            <Avatar alt={user?.username || 'U'} size={54} />
+            <Avatar src={getProfileImageUrl(user?.profileImage)} alt={user?.username || 'U'} size={54} />
             <span className="mt-2 font-semibold text-primary dark:text-accent text-base">{user?.username || 'User'}</span>
             <span className="text-xs text-gray-500 dark:text-gray-400">{user?.email || ''}</span>
           </div>

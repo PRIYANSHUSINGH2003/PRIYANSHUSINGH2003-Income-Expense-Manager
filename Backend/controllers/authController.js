@@ -173,13 +173,28 @@ async function getProfile(req, res) {
 // Update profile image (protected)
 async function updateProfileImage(req, res) {
     try {
-        const username = req.user.username;
+        console.log('req.user:', req.user);
+        console.log('req.file:', req.file);
+        const username = req.user && req.user.username;
+        if (!username) {
+            console.log('No username in JWT payload');
+            return res.status(400).json({ error: 'No username in JWT payload' });
+        }
         const user = await User.findOne({ username });
-        if (!user) return res.status(404).json({ error: 'User not found' });
+        if (!user) {
+            console.log('User not found');
+            return res.status(404).json({ error: 'User not found' });
+        }
+        if (!req.file) {
+            console.log('No file uploaded');
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
         user.profileImage = `/profile_images/${req.file.filename}`;
         await user.save();
+        console.log('Profile image updated:', user.profileImage);
         res.json({ message: 'Profile image updated', profileImage: user.profileImage });
     } catch (err) {
+        console.log('Error updating profile image:', err);
         res.status(500).json({ error: 'Profile image update error', details: err.message });
     }
 }

@@ -48,6 +48,7 @@ export function AuthProvider({ children }) {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
     setUser(prev => ({ ...prev, profileImage: res.data.profileImage }));
+    return res.data;
   };
 
   const logout = () => {
